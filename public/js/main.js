@@ -48,7 +48,7 @@ function getOfficerHtml(id, organization, division, job_title, name, totals, flu
 function getOfficersHtml(id, organization, division, job_title, name, totals, fluctuates){
     var row = "<tr class='cur_po'>";
     row += "<td class='hidden'>"+id+"</td>";
-    row +="<td class='col-sm-4 officer_table_td'><div class='chart_official'>"+name+"</div><div class='chart_official_sub'>"+job_title+"</div><div class='chart_official_sub'>"+division+"</div></td>";
+    row +="<td class='col-sm-4 officer_table_td'><div class='chart_official'>"+name+"</div><div class='chart_official_sub'>"+t(job_title)+"</div><div class='chart_official_sub'>"+t(division)+"</div></td>";
     row +="<td class='col-sm-4 officer_table_td'>"+getOfficerTotalsHtml(convertUnit(totals))+"</td>";
     row +="<td class='col-sm-4 officer_table_td'>"+getFluctuatesHtml(convertUnit(fluctuates))+"</td>";
     row += "</tr>";

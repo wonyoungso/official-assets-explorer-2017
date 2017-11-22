@@ -1,30 +1,31 @@
 <div class="content_container">
     <div class="content_title col-xs-12 col-sm-12">
-        <div>고위 공무원</div>
-        <div>재산 / 포트폴리오</div>
+        <div>The Financial Disclosure of</div>
+        <div>Public Officials</div>
     </div>
     <div class="row">
-        <div class="content_update col-xs-12 col-sm-6">마지막 업데이트, 2017년 4월 12일</div>
+        <div class="content_update col-xs-12 col-sm-6">Last update: April 12, 2017</div>
         <div class="col-xs-12 col-sm-6">
             <p class="content_desc">
-                이 데이터베이스를 이용하여 대한민국 고위 공무원의 현재 재산 상태를 확인하고 부동산/동산과 같은 재정적 세부 사항을 확인할 수 있습니다. 2011년이래로 940만 건 이상의 고위 공직자 재산 데이터에 액세스 할 수 있습니다.
+                You can use this website to check the current status of property of senior Korean officials and to view financial details such as real estate and property. You can have access to more than 9.4 million high-ranking public officials' property data from 2011.
             </p>
         </div>
     </div>
+    <div class="l-apple-box--double"></div>
     <div class="row">
-        <div class="search_title">검색하기</div>
+        <div class="search_title">Search</div>
         <div class="search_container">
-            <input id="data_search_text" type="text" value="이름, 정당, 직책 등"/>
-            <input id="data_search_btn" type="button" value="검색"/>
+            <input id="data_search_text" type="text" value="Name, Party, Affiliation"/>
+            <input id="data_search_btn" type="button" value="Submit" />
         </div>
     </div>
     <div class="officer_container">
         <table id="officer_table" class="officer_table col-sm-12">
             <thead class="hidden">
                 <tr>
-                    <th class="text-left col-sm-4 officer_table_th">이름(소속 및 지위)</th>
-                    <th class="text-left col-sm-4 officer_table_th">재산 총액</th>
-                    <th class="text-left col-sm-4 officer_table_th">전년도 대비</th>
+                    <th class="text-left col-sm-4 officer_table_th">Name(Affiliation and Status)</th>
+                    <th class="text-left col-sm-4 officer_table_th">Total Property</th>
+                    <th class="text-left col-sm-4 officer_table_th">Previous Year</th>
                 </tr>
             </thead>
             <tbody>
@@ -64,9 +65,9 @@
         
         $("#data_search_btn").click(function (event) {
             var search_keyword = $("#data_search_text").val();
-            if(search_keyword == "" || search_keyword == "-" || search_keyword ==  "이름, 정당, 직책 등"){
+            if(search_keyword == "" || search_keyword == "-" || search_keyword ==  "Name, Party, Affiliation"){
                 alert("검색 키워드를 입력해주세요.");    
-                $("#data_search_text").val("이름, 정당, 직책 등");
+                $("#data_search_text").val("Name, Party, Affiliation");
                 search_keyword = "-";
             }else{
                 getSummaryDatas(search_keyword);
@@ -257,7 +258,7 @@
     }
     
     function initDataSearch(search_keyword){
-        $("#data_search_text").val("이름, 정당, 직책 등");
+        $("#data_search_text").val("Name, Party, Affiliation");
         $("#officer_table tbody").empty().append(getEmptyRowHtml(4));
         $("#data_table tbody").empty().append(getEmptyRowHtml(4));
         if(isMobile){

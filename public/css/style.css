@@ -30,7 +30,9 @@ body{
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
-
+.highcharts-text-outline {
+  display: none;
+}
 ul{
   list-style-type: none;
   margin: 0;
@@ -41,15 +43,32 @@ ul{
 a, a:hover, a:active, a:link, a:visited {
   text-decoration: none;
   color: #fff;
+  transition: 0.4s all;
 }
 
+#search_btn {
+  transition: 0.4s all;
+}
+#search_btn:hover {
+  opacity: 0.5
+}
+
+
 a:hover, li:hover{
-  opacity: 0.5 ;
+  opacity: 0.5;
 }
 
 .row{
   padding: 0px !important;
   margin: 0px !important;
+}
+
+.l-apple-box {
+  height: 30px;
+}
+
+.l-apple-box--double {
+  height: 75px;
 }
 
 .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
@@ -110,8 +129,11 @@ a:hover, li:hover{
   color: #fff;
 }
 
+.search_container {
+  display:flex;
+  align-items: center;
+}
 .search_container input[type="text"] {
-  display: inline;
   box-shadow: none;
   border-top:none;
   border-left:none;
@@ -119,6 +141,8 @@ a:hover, li:hover{
   border-bottom: solid 1px #979797;
   color: rgba(255, 255, 255, 0.5);
   background-color: #242424;
+  font-size: 15px;
+  margin-top: 15px;
 }
 
 .search_container input[type="text"]:focus {
@@ -142,10 +166,8 @@ a:hover, li:hover{
 }
 
 .search_container input[type="button"]{
-  width: 64px;
   height: 40px;
-  padding-top: 7px;
-  padding-bottom:9px;
+  padding: 8px 15px;
   font-size: 16px;
   font-weight: bold;
 }
@@ -262,7 +284,7 @@ a:hover, li:hover{
 }
 
 span.download_data_format {
-  font-size:0.7em;
+  font-size:0.9em;
 }
 
 
@@ -297,14 +319,14 @@ span.download_data_format {
     
 @media screen and (min-width:640px){
     .header_container{
-        font-size: 15px;
-        height: 79px;
+        font-size: 14px;
+        height: 60px;
     }
     
     .header_title{
-      padding-top: 20px;
-      padding-left: 30px;
-      font-size: 15px;
+      padding-top: 10px;
+      padding-left: 10px;
+      font-size: 14px;
     }
     
     .header_sub_title{
@@ -314,7 +336,7 @@ span.download_data_format {
     
     .header_title .codenamu_logo{
       margin-right: 10px;
-      width: 40px;
+      width: 35px;
       height: 40px;
     }
     
@@ -323,16 +345,16 @@ span.download_data_format {
     }
     
     .header_menu{
-      padding-top: 29px; 
-      padding-right: 30px;
+      padding-top: 21px;
+      padding-right: 20px;
     }
     
     .header_menu li {
-      margin-left: 10px;
+      margin-left: 15px;
     }
     
     .content_container{
-      padding : 17px 90px 0px 84px;
+      padding : 60px 90px 0px 84px;
       width: 1024px;
     }
     
@@ -354,13 +376,14 @@ span.download_data_format {
     
     .search_title{
       font-size: 20px; 
-      margin-bottom: 20px;
+      margin-bottom: 0;
     }
     
     .search_container input[type="text"] {
       width:394px;
       font-size: 15px;
       padding: 3px 0px 17px 0px;
+      border-bottom: solid 1px #5d5d5d;
       margin-right: 11px;
     }
     
@@ -428,7 +451,7 @@ span.download_data_format {
     
     .chart_official_sub{
       color:rgba(255, 255, 255, 0.7);
-      font-size:15px;
+      font-size:13px;
       cursor: pointer;
     }
     
@@ -561,6 +584,19 @@ span.download_data_format {
       padding-top: 0px !important;
     }
     
+    .content_introduce_en p{
+      font-size: 16px;
+      padding-top: 36px;
+      font-weight: bold;
+      float: left;
+      margin: 0px !important;
+      text-rendering: optimizeLegibility;
+      word-break: keep-all;
+      line-height: 1.4;
+      padding-right: 30px;
+    }
+    
+
     .content_introduce p{
       font-size: 18px;
       padding-top: 36px;
@@ -577,7 +613,7 @@ span.download_data_format {
     }
     
     .download_table{
-      font-size: 21px;
+      font-size: 15px;
       margin-top: 40px;
       margin-bottom: 76px;
     }
@@ -772,13 +808,15 @@ span.download_data_format {
     }
     
     .content_introduce{
-      font-size: 15px;
+      font-size: 14px;
       padding-top: 25px;
       width: 294px;
       text-rendering: optimizeLegibility;
       word-break: keep-all;
     }
+  
     
+
     .download_table{
       margin-top: 36px;
       font-size: 13px;

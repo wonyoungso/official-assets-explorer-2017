@@ -2,13 +2,13 @@ function getSeriesName(index){
     var series_name = '';
     switch(index%3){
         case 0:    
-            series_name = "현금성 자산";
+            series_name = "Cash";
             break;
         case 1:    
-            series_name = "부동산";
+            series_name = "Real Estate";
             break;
         case 2:    
-            series_name = "주식";
+            series_name = "Stock";
             break;
     }
     return series_name;
@@ -30,29 +30,86 @@ function getAssetByType(data, index){
     return asset;
 }
 
+var tDic = {
+    "국회": "National Assembly",
+    "국회의원": "Congressperson",
+    "정부": "Government",
+    "병원장": "Hospital Director",
+    "법원": "Court",
+    "부장판사": "Senior Judge"
+}
+
+function t(ko_name) {
+    if (tDic[ko_name] == undefined){
+        return ko_name;
+    } else {
+        return tDic[ko_name];
+    }
+}
+
 function getCategoryHtml(name, organization, division, totals){
     var categoryHtml='<span class="chart_official" style="color:white;">'+name+'</span><br/>'+
-	'<span class="chart_official_sub" style="color:rgba(255, 255, 255, 0.7);">'+organization+'</span><br/>'+
- 	'<span class="chart_official_sub" style="color:rgba(255, 255, 255, 0.7);">'+division+'</span><br/>'+getCategoryTotals(convertUnit(totals));
+	'<span class="chart_official_sub" style="color:rgba(255, 255, 255, 0.7);">'+t(organization)+'</span><br/>'+
+ 	'<span class="chart_official_sub" style="color:rgba(255, 255, 255, 0.7);">'+t(division)+'</span><br/>'+getCategoryTotals(convertUnit(totals));
  
     return categoryHtml;
 }
+function abbreviateNumber(num, fixed) {
+  if (num === null) { return null; } // terminate early
+  if (num === 0) { return '0'; } // terminate early
+  fixed = (!fixed || fixed < 0) ? 0 : fixed; // number of decimal places to show
+  var b = (num).toPrecision(2).split("e"), // get power
+      k = b.length === 1 ? 0 : Math.floor(Math.min(b[1].slice(1), 14) / 3), // floor at decimals, ceiling at trillions
+      c = k < 1 ? num.toFixed(0 + fixed) : (num / Math.pow(10, k * 3) ).toFixed(1 + fixed), // divide by power
+      d = c < 0 ? c : Math.abs(c), // enforce -0 is 0
+      e = d + ['', 'K', 'M', 'B', 'T'][k]; // append power
+  return e;
+}
+
+function abbreviateNumberOnly(num, fixed) {
+  if (num === null) { return null; } // terminate early
+  if (num === 0) { return '0'; } // terminate early
+  fixed = (!fixed || fixed < 0) ? 0 : fixed; // number of decimal places to show
+  var b = (num).toPrecision(2).split("e"), // get power
+      k = b.length === 1 ? 0 : Math.floor(Math.min(b[1].slice(1), 14) / 3), // floor at decimals, ceiling at trillions
+      c = k < 1 ? num.toFixed(0 + fixed) : (num / Math.pow(10, k * 3) ).toFixed(1 + fixed), // divide by power
+      d = c < 0 ? c : Math.abs(c); // enforce -0 is 0
+  return d;
+}
+
+function abbreviateNumberUnit(num, fixed) {
+  if (num === null) { return null; } // terminate early
+  if (num === 0) { return '0'; } // terminate early
+  fixed = (!fixed || fixed < 0) ? 0 : fixed; // number of decimal places to show
+  var b = (num).toPrecision(2).split("e"), // get power
+      k = b.length === 1 ? 0 : Math.floor(Math.min(b[1].slice(1), 14) / 3), // floor at decimals, ceiling at trillions
+      c = k < 1 ? num.toFixed(0 + fixed) : (num / Math.pow(10, k * 3) ).toFixed(1 + fixed), // divide by power
+      d = c < 0 ? c : Math.abs(c), // enforce -0 is 0
+      e = ['', 'K', 'M', 'B', 'T'][k]; // append power
+  return e;
+}
 
 function getCategoryTotals(totals){
-    var total_html = totals.toString();
-    if(total_html.length <= 4){
-        total_html = '<span class="chart_totals" style="color:rgba(255, 255, 255, 1);font-size:40px;">'+numberWithCommas(total_html)+'</span><span style="color:rgba(255, 255, 255, 0.5);font-size:15px;">만원</span>';        
-    }else{
-        total_html = '<span class="chart_totals" style="color:rgba(255, 255, 255, 1);font-size:40px;">'+numberWithCommas(total_html.substring(0, total_html.length-4))+ '</span><span style="color:rgba(255, 255, 255, 0.5);font-size:15px;">억 </span>'
-            + '<span class="chart_totals_sub" style="color:rgba(255, 255, 255, 1);">'+numberWithCommas(total_html.substring(total_html.length-4))+ '</span><span style="color:rgba(255, 255, 255, 0.5);font-size:15px;">만원</span>';
-    }
+    totals = totals * 10000;
+
+    var total_html;
+
+    total_html = '<span class="chart_totals" style="color:rgba(255, 255, 255, 1);font-size:40px;">'+abbreviateNumberOnly(totals)+'</span><span style="color:rgba(255, 255, 255, 0.5);font-size:15px;">' + abbreviateNumberUnit(totals)  + ' KRW</span>';        
+
+    // var total_html = totals.toString();
+    // if(total_html.length <= 4){
+    //     total_html = '<span class="chart_totals" style="color:rgba(255, 255, 255, 1);font-size:40px;">'+numberWithCommas(total_html)+'</span><span style="color:rgba(255, 255, 255, 0.5);font-size:15px;">만원</span>';        
+    // }else{
+    //     total_html = '<span class="chart_totals" style="color:rgba(255, 255, 255, 1);font-size:40px;">'+numberWithCommas(total_html.substring(0, total_html.length-4))+ '</span><span style="color:rgba(255, 255, 255, 0.5);font-size:15px;">억 </span>'
+    //         + '<span class="chart_totals_sub" style="color:rgba(255, 255, 255, 1);">'+numberWithCommas(total_html.substring(total_html.length-4))+ '</span><span style="color:rgba(255, 255, 255, 0.5);font-size:15px;">만원</span>';
+    // }
     return total_html;
 }
 
 function getCategoryFluctuates(number){
     var fluctuates_html = number.toString();
     var front_span = '<span class="chart_up" style="color:#ff6300;">↑</span><span class="chart_up_unit" style="color:#ff6300;">';
-    var back_span ="만원</span>";
+    var back_span ="</span>";
     
     if(-1 < fluctuates_html.indexOf('-')){
         front_span = '<span class="chart_down" style="color:#0075fa;">↓</span><span class="chart_down_unit" style="color:#0075fa;">';
@@ -61,10 +118,10 @@ function getCategoryFluctuates(number){
     
     if(4 <= fluctuates_html.length){
         fluctuates_html = fluctuates_html.substring(0, fluctuates_html.length-5);
-        back_span ="억원</span>";
+        back_span ="</span>";
     }
     
-    return front_span + numberWithCommas(fluctuates_html)+back_span;
+    return front_span + abbreviateNumber(number * 1000) +back_span;
 }
 
 function defined(obj) {
@@ -198,11 +255,14 @@ var main_options = {
             fontFamily: 'mark-pro'
           },
           formatter: function() {
-              if(100000 < this.value || this.value < -100000){
-                  return numberWithCommas((this.value/100000)) + "억";    
-              }else{
-                  return numberWithCommas(this.value);
-              }
+            // debugger;
+
+            return abbreviateNumber(this.value * 1000);
+              // if(100000 < this.value || this.value < -100000){
+              //     return numberWithCommas((this.value/100000)) + "억";    
+              // }else{
+              //     return numberWithCommas(this.value);
+              // }
             },
         }
     },
@@ -222,12 +282,12 @@ var main_options = {
                 style:{"color": "#ffffff", "fontSize": "13px", "fontWeight":"normal","fontFamily":"mark-pro"},
                 formatter: function() {
                     if(this.y != 0){
-                        var label ='현금성자산 ';
+                        var label ='Cash ';
                     	var asset = (this.y).toString();
                         if(this.series.columnIndex == 1){
-                          	label = '부동산 ';
+                          	label = 'Real Estate ';
                         }else if(this.series.columnIndex == 2){
-                          	label = '금융자산 ';
+                          	label = 'Financial ';
                         }
                         
                         var symbol = "-";
@@ -237,14 +297,15 @@ var main_options = {
                             symbol="";
                         }
                         
-                        if(this.key=='김병관')
-                            console.log(asset);
                             
-                        if(5 < asset.length){
-                            asset = numberWithCommas(asset.substr(0, asset.length-5)) + "억";
-                        }else{
-                            asset = numberWithCommas(asset.substr(0, asset.length-1)) + "만";
-                        }
+                        // if(5 < asset.length){
+                        //     // asset = numberWithCommas(asset.substr(0, asset.length-5)) + "억";
+                        // }else{
+                        //     // asset = numberWithCommas(asset.substr(0, asset.length-1)) + "만";
+                        // }
+
+                        // debugger;
+                        asset = abbreviateNumber(Number(asset) * 1000);
                         
         				return label + symbol + asset;        
                     }else{
@@ -330,12 +391,12 @@ var main_mobile_option = {
                 style:{"color": "#ffffff", "fontSize": "13px", "fontWeight":"normal","fontFamily":"mark-pro" },
                 formatter: function() {
                     if(this.y != 0){
-                        var label ='현금성자산 ';
+                        var label ='Cash ';
                     	var asset = (this.y).toString();
                         if(this.series.columnIndex == 1){
-                          	label = '부동산 ';
+                          	label = 'Real Estate ';
                         }else if(this.series.columnIndex == 2){
-                          	label = '주식 ';
+                          	label = 'Stock ';
                         }
                         
                         if(5 < asset.length){
