@@ -10,7 +10,7 @@ const liabilitysController = require('../controllers').liabilitys;
 
 module.exports = (app) => {
   //view routes
-  app.get('/en',function(req,res){
+  app.get('/',function(req,res){
     res.render('index');
   });
 
