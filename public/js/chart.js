@@ -30,22 +30,6 @@ function getAssetByType(data, index){
     return asset;
 }
 
-var tDic = {
-    "국회": "National Assembly",
-    "국회의원": "Congressperson",
-    "정부": "Government",
-    "병원장": "Hospital Director",
-    "법원": "Court",
-    "부장판사": "Senior Judge"
-}
-
-function t(ko_name) {
-    if (tDic[ko_name] == undefined){
-        return ko_name;
-    } else {
-        return tDic[ko_name];
-    }
-}
 
 function getCategoryHtml(name, organization, division, totals){
     var categoryHtml='<span class="chart_official" style="color:white;">'+name+'</span><br/>'+
@@ -53,40 +37,6 @@ function getCategoryHtml(name, organization, division, totals){
  	'<span class="chart_official_sub" style="color:rgba(255, 255, 255, 0.7);">'+t(division)+'</span><br/>'+getCategoryTotals(convertUnit(totals));
  
     return categoryHtml;
-}
-function abbreviateNumber(num, fixed) {
-  if (num === null) { return null; } // terminate early
-  if (num === 0) { return '0'; } // terminate early
-  fixed = (!fixed || fixed < 0) ? 0 : fixed; // number of decimal places to show
-  var b = (num).toPrecision(2).split("e"), // get power
-      k = b.length === 1 ? 0 : Math.floor(Math.min(b[1].slice(1), 14) / 3), // floor at decimals, ceiling at trillions
-      c = k < 1 ? num.toFixed(0 + fixed) : (num / Math.pow(10, k * 3) ).toFixed(1 + fixed), // divide by power
-      d = c < 0 ? c : Math.abs(c), // enforce -0 is 0
-      e = d + ['', 'K', 'M', 'B', 'T'][k]; // append power
-  return e;
-}
-
-function abbreviateNumberOnly(num, fixed) {
-  if (num === null) { return null; } // terminate early
-  if (num === 0) { return '0'; } // terminate early
-  fixed = (!fixed || fixed < 0) ? 0 : fixed; // number of decimal places to show
-  var b = (num).toPrecision(2).split("e"), // get power
-      k = b.length === 1 ? 0 : Math.floor(Math.min(b[1].slice(1), 14) / 3), // floor at decimals, ceiling at trillions
-      c = k < 1 ? num.toFixed(0 + fixed) : (num / Math.pow(10, k * 3) ).toFixed(1 + fixed), // divide by power
-      d = c < 0 ? c : Math.abs(c); // enforce -0 is 0
-  return d;
-}
-
-function abbreviateNumberUnit(num, fixed) {
-  if (num === null) { return null; } // terminate early
-  if (num === 0) { return '0'; } // terminate early
-  fixed = (!fixed || fixed < 0) ? 0 : fixed; // number of decimal places to show
-  var b = (num).toPrecision(2).split("e"), // get power
-      k = b.length === 1 ? 0 : Math.floor(Math.min(b[1].slice(1), 14) / 3), // floor at decimals, ceiling at trillions
-      c = k < 1 ? num.toFixed(0 + fixed) : (num / Math.pow(10, k * 3) ).toFixed(1 + fixed), // divide by power
-      d = c < 0 ? c : Math.abs(c), // enforce -0 is 0
-      e = ['', 'K', 'M', 'B', 'T'][k]; // append power
-  return e;
 }
 
 function getCategoryTotals(totals){
@@ -279,7 +229,7 @@ var main_options = {
         bar: {
             dataLabels: {
                 enabled: true,
-                style:{"color": "#ffffff", "fontSize": "13px", "fontWeight":"normal","fontFamily":"mark-pro"},
+                style:{"color": "#ffffff", "fontSize": "13px", "fontWeight":"normal","fontFamily":"SpoqaHanSans"},
                 formatter: function() {
                     if(this.y != 0){
                         var label ='Cash ';
@@ -462,11 +412,13 @@ var history_options = {
         labels:{
           	style:{ "color": "#fff", "fontSize": "12px","fontFamily":"mark-pro" },
             formatter: function() {
-              if(100000 < this.value || this.value < -100000){
-                  return (this.value/100000) + " 억";    
-              }else{
-                  return this.value;
-              }
+                return abbreviateNumber(this.value * 1000);
+
+              // if(100000 < this.value || this.value < -100000){
+              //     return (this.value/100000) + " 억";    
+              // }else{
+              //     return this.value;
+              // }
             },
         }
     },

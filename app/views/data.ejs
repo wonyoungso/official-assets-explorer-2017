@@ -36,22 +36,22 @@
         <table id="data_table" class="data_table col-sm-12">
             <thead>
                 <tr>
-                    <th class="col-sm-4 text-left">항목</th>
-                    <th class="col-sm-3 text-left">2016년</th>
-                    <th class="col-sm-3 text-left">2017년</th>
-                    <th class="col-sm-2 text-right">증감</th>
+                    <th class="col-sm-4 text-left">Item</th>
+                    <th class="col-sm-3 text-left">2016</th>
+                    <th class="col-sm-3 text-left">2017</th>
+                    <th class="col-sm-2 text-right">Fluctuation</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="no_data" colspan="4">검색 결과가 없습니다.</td>
+                    <td class="no_data" colspan="4">No search results.</td>
                 </tr>
             </tbody>
         </table>
     </div>
     <div id="sub_chart" class="row sub_chart hidden">
         <table>
-            <td class="col-xs-12 col-sm-1 text-left sub_title">재산 이력</td>
+            <td class="col-xs-12 col-sm-1 text-left sub_title">Property History</td>
             <td class="col-xs-12 col-sm-11 text-left"><div id="history_chart" style="min-width: 310px;" /></td>
         </table>    
     </div>
@@ -66,7 +66,7 @@
         $("#data_search_btn").click(function (event) {
             var search_keyword = $("#data_search_text").val();
             if(search_keyword == "" || search_keyword == "-" || search_keyword ==  "Name, Party, Affiliation"){
-                alert("검색 키워드를 입력해주세요.");    
+                alert("Please enter keywords for searching.");    
                 $("#data_search_text").val("Name, Party, Affiliation");
                 search_keyword = "-";
             }else{
@@ -221,7 +221,7 @@
             var current_assets = data.summaries[0].totals;
             var previous_assets = current_assets - data.summaries[0].fluctuates;
             var series_data =  new Array();
-            debugger;
+            
             // 전년도 재산
             var row_data = new Array();
             row_data.push(current_year-1);
@@ -234,8 +234,8 @@
             row_data.push(current_assets);
             series_data.push(row_data);
             
-            history_options.tooltip.pointFormat = data.name+ " "+ data.job_title +"의 재산은 전년 대비 <b>"
-                +getTotalText(convertUnit(data.summaries[0].fluctuates)).replace("-","")+" "+(-1<data.summaries[0].fluctuates.toString().indexOf("-")?"감소":"증가")+"하였습니다.</b>";
+            history_options.tooltip.pointFormat = data.name+ " ("+ t(data.job_title) +")'s property <b>"
+                +getTotalText(convertUnit(data.summaries[0].fluctuates)).replace("-","")+" "+(-1<data.summaries[0].fluctuates.toString().indexOf("-")?"increased":"decreased")+" from last year.</b>";
             
             var history_chart = new Highcharts.Chart(history_options);
             history_chart.series[0].setData(series_data, true);

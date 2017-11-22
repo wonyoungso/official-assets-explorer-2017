@@ -53,8 +53,7 @@ a, a:hover, a:active, a:link, a:visited {
   opacity: 0.5
 }
 
-
-a:hover, li:hover{
+a:hover, li:hover {
   opacity: 0.5;
 }
 
@@ -452,6 +451,7 @@ span.download_data_format {
     .chart_official_sub{
       color:rgba(255, 255, 255, 0.7);
       font-size:13px;
+      font-family: 'SpoqaHanSans';
       cursor: pointer;
     }
     
@@ -486,7 +486,7 @@ span.download_data_format {
       color:#ff6300;
       cursor: pointer;
       font-size: 15px;
-      font-family:'mark-pro';
+      font-family:'SpoqaHanSans';
     }
     
     .chart_down{
@@ -500,7 +500,7 @@ span.download_data_format {
       color:#ff6300;
       cursor: pointer;
       font-size: 15px;
-      font-family:'mark-pro';
+      font-family:'SpoqaHanSans';
     }
     
     .totals_text{

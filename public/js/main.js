@@ -1,11 +1,11 @@
 function getTotalsHtml(number){
-    var total_html = number.toString();
-    if(total_html.length <= 4){
-        total_html = "<span class='small_price'>"+numberWithCommas(number)+"</span><span class='unit_price'>만원</span>";        
-    }else{
-        total_html = "<span class='big_price'>"+numberWithCommas(total_html.substring(0, total_html.length-4))+ "</span><span class='unit_price'>억</span>"
-            + "<span class='small_price'>"+numberWithCommas(total_html.substring(total_html.length-4))+ "</span><span class='unit_price'>만원</span></span>";
-    }
+    var total_html;// = number.toString();
+    // if(total_html.length <= 4){
+        total_html = "<span class='big_price'>"+ abbreviateNumberOnly(number * 10000)+"</span><span class='unit_price'>" + abbreviateNumberUnit(number * 10000) + " KRW</span>";        
+    // }else{
+    //     total_html = "<span class='big_price'>"+numberWithCommas(total_html.substring(0, total_html.length-4))+ "</span><span class='unit_price'>억</span>"
+    //         + "<span class='small_price'>"+numberWithCommas(total_html.substring(total_html.length-4))+ "</span><span class='unit_price'>만원</span></span>";
+    // }
     return total_html;
 }
 
@@ -15,32 +15,32 @@ function getFluctuatesHtml(number){
     }else{
         var fluctuates_html = number.toString();
         var fron_span ="<div class='up_price'><div class='arrow_price'>&#x2191</div>";
-        var back_span ="만원</div>";
+        var back_span ="</div>";
         
         if(-1 < fluctuates_html.indexOf('-')){
             fron_span = "<div class='down_price'><div class='arrow_price'>&#x2193</div>";
             fluctuates_html = fluctuates_html.replace("-","");
         }
         
-        if(4 < fluctuates_html.length){
-            fluctuates_html = fluctuates_html.substring(0, fluctuates_html.length-4);
-            back_span ="억원</div>";
-        }
+        // if(4 < fluctuates_html.length){
+            // fluctuates_html = fluctuates_html.substring(0, fluctuates_html.length-4);
+            // back_span ="</div>";
+        // }
         
-        fluctuates_html = numberWithCommas(fluctuates_html);
+        fluctuates_html = abbreviateNumber(number * 10000);
         if(Number(fluctuates_html)==0){
             fluctuates_html = 1;
         }
-        return fron_span + "<span style='font-family:mark-pro !important'>"+fluctuates_html + "</span>" +back_span;
+        return fron_span + "<span style='font-family:SpoqaHanSans !important'>"+fluctuates_html + "</span>" +back_span;
     }
 }
 
 function getOfficerHtml(id, organization, division, job_title, name, totals, fluctuates){
     var row = "<tr class='cur_po'>";
     row += "<td class='hidden'>"+id+"</td>";
-    row +="<td class='col-sm-4'><div class='official_title'>"+name+"</div><div class='official_text'>"+job_title+"</div><div class='official_text'>"+division+"</div></td>";
-    row +="<td class='col-sm-4'><div class='totals_text'>총액</div>"+getTotalsHtml(convertUnit(totals))+"</td>";
-    row +="<td class='col-sm-4'><div class='totals_text'>전년도 대비</div>"+getFluctuatesHtml(convertUnit(fluctuates))+"</td>";
+    row +="<td class='col-sm-4'><div class='official_title'>"+name+"</div><div class='official_text'>"+t(job_title)+"</div><div class='official_text'>"+t(division)+"</div></td>";
+    row +="<td class='col-sm-4'><div class='totals_text'>Total</div>"+getTotalsHtml(convertUnit(totals))+"</td>";
+    row +="<td class='col-sm-4'><div class='totals_text'>Flucuations from Previous Year</div>"+getFluctuatesHtml(convertUnit(fluctuates))+"</td>";
     row += "</tr>";
     return row;
 }
@@ -56,13 +56,13 @@ function getOfficersHtml(id, organization, division, job_title, name, totals, fl
 }
 
 function getOfficerTotalsHtml(number){
-    var total_html = number.toString();
-    if(total_html.length <= 4){
-        total_html = "<span class='chart_totals'>"+numberWithCommas(number)+"</span><span class='unit_price'>만원</span>";        
-    }else{
-        total_html = "<span class='chart_totals'>"+numberWithCommas(total_html.substring(0, total_html.length-4))+ "</span><span class='chart_totals_unit'>억 </span>"
-            + "<span class='chart_totals_sub'>"+numberWithCommas(total_html.substring(total_html.length-4))+ "</span><span class='chart_totals_unit'>만원</span></span>";
-    }
+    // var total_html = number.toString();
+    // if(total_html.length <= 4){
+    total_html = "<span class='chart_totals'>"+ abbreviateNumberOnly(number * 1000)+"</span><span class='unit_price'>" + abbreviateNumberUnit(number * 1000) + "</span>";        
+    // }else{
+    //     total_html = "<span class='chart_totals'>"+numberWithCommas(total_html.substring(0, total_html.length-4))+ "</span><span class='chart_totals_unit'>억 </span>"
+    //         + "<span class='chart_totals_sub'>"+numberWithCommas(total_html.substring(total_html.length-4))+ "</span><span class='chart_totals_unit'>만원</span></span>";
+    // }
     return total_html;
 }
 
@@ -96,8 +96,8 @@ function getOfficerTotalsHtml(number){
 function getMainOfficerHtmlByMobile(id, organization, division, job_title, name, totals, fluctuates){
     var row='<div class="officer_row"><div class="row"><div class="col-xs-7 text-left">';
     row += '<div class="official_title">'+name+'</div>';
-    row += '<div class="official_text">'+organization+'</div>';
-    row += '<div class="official_text">'+job_title+'</div></div>';
+    row += '<div class="official_text">'+t(organization)+'</div>';
+    row += '<div class="official_text">'+t(job_title)+'</div></div>';
     row += '<div class="col-xs-5 text-right">'+getFluctuatesHtml(convertUnit(fluctuates))+'</div></div>';
     row += '<div class="official_totals row"><div class="col-xs-12 text-left">'+getTotalsHtml(convertUnit(totals));
     row += '</div></div><div class="row"><div id="main_chart_'+id+'"></div></div></div>';
@@ -107,8 +107,8 @@ function getMainOfficerHtmlByMobile(id, organization, division, job_title, name,
 function getOfficerHtmlByMobile(id, organization, division, job_title, name, totals, fluctuates){
     var row='<tr><td class="hidden">'+id+'</td>';
     row += '<td class="col-xs-7 text-left"><div class="official_title">'+name+'</div>';
-    row += '<div class="official_text">'+organization+'</div>';
-    row += '<div class="official_text">'+job_title+'</div></td>';
+    row += '<div class="official_text">'+t(organization)+'</div>';
+    row += '<div class="official_text">'+t(job_title)+'</div></td>';
     row += '<td class="col-xs-5 text-right">'+getFluctuatesHtml(convertUnit(fluctuates))+'</div></td>';
     row += '<tr class="official_totals"><td colspan="3" class="padding-top-35 margin-bottom-15 col-xs-12 text-left">'+getTotalsHtml(convertUnit(totals))+'</td></tr>';
     return row; 
@@ -116,19 +116,19 @@ function getOfficerHtmlByMobile(id, organization, division, job_title, name, tot
 
 function getEmptyRowHtml(cols){
     var row = "<tr>";
-    row += "<td colspan="+cols+" class='no_data'>검색 결과가 없습니다.</td>";
+    row += "<td colspan="+cols+" class='no_data'>No Search Results.</td>";
     row += "</tr>";
     return row;
 }
 
 function getEmptyRowHtml(){
-    var row = "<div class='col-xs-12 no_data'>검색 결과가 없습니다.</div>";
+    var row = "<div class='col-xs-12 no_data'>No Search Results.</div>";
     return row;
 }
 
 function getSelectRowHtml(cols){
     var row = "<tr>";
-    row += "<td colspan="+cols+" class='no_data'>검색결과를 선택해주세요.</td>";
+    row += "<td colspan="+cols+" class='no_data'>Please select one from the list.</td>";
     row += "</tr>";
     return row;
 }
@@ -144,8 +144,8 @@ function getSelectedOfficerHtml(organization, division, job_title, name, total, 
 
 function getSelectedOfficerHtmlByMobile(organization, division, job_title, name, totals, fluctuates){
     var row='<tr><td class="col-xs-7 text-left"><div class="official_title">'+name+'</div>';
-    row += '<div class="official_text">'+organization+'</div>';
-    row += '<div class="official_text">'+job_title+'</div></td>';
+    row += '<div class="official_text">'+t(organization)+'</div>';
+    row += '<div class="official_text">'+t(job_title)+'</div></td>';
     row += '<td class="col-xs-5 text-right">'+fluctuates+'</div></td>';
     row += '<tr class="official_totals"><td colspan="3" class="padding-top-35 margin-bottom-15 col-xs-12 text-left">'+totals+'</td></tr>';
     return row;
@@ -157,13 +157,13 @@ function getSimpleTotalHtml(number){
         symbol = "-";
         number = Math.abs(number);
     }
-    var total_html = convertUnit(number).toString();
+    var total_html;// = convertUnit(number).toString();
     
-    if(total_html.length <= 4){
-        total_html = "<span class='simple_price'>"+numberWithCommas(total_html)+"</span><span class='simple_unit_price'>만원</span>";        
-    }else{
-        total_html = "<span class='simple_price'>"+numberWithCommas(total_html.substring(0, total_html.length-4))+ "</span><span class='simple_unit_price'>억</span>";
-    }
+    // if(total_html.length <= 4){
+    //     total_html = "<span class='simple_price'>"+numberWithCommas(total_html)+"</span><span class='simple_unit_price'>만원</span>";        
+    // }else{
+        total_html = "<span class='simple_price'>"+abbreviateNumberOnly(number * 1000)+ "</span><span class='simple_unit_price'>" + abbreviateNumberUnit(number * 1000) + "</span>";
+    // }
     return symbol+total_html;
 }
 
@@ -174,12 +174,13 @@ function getTotalText(number){
         symbol = "-";
         number = Math.abs(number);
     }
-    var total_html = number.toString();
-    if(total_html.length <= 4){
-        total_html = numberWithCommas(total_html)+"만원";        
-    }else{
-        total_html = numberWithCommas(total_html.substring(0, total_html.length-4))+ "억원";
-    }
+    // var total_html = number.toString();
+    // if(total_html.length <= 4){
+    //     total_html = numberWithCommas(total_html)+"만원";        
+    // }else{
+    //     total_html = numberWithCommas(total_html.substring(0, total_html.length-4))+ "억원";
+    // }
+    var total_html = abbreviateNumber(number * 10000);
     return symbol+total_html;
 }
 
@@ -193,7 +194,7 @@ function getAssetDataHtml(tengible_estate_assets, tengible_assets, financial_ass
     previous_price = 0;
     present_price = 0;
     row +="<tr>";
-    row +="<td class='col-sm-4 text-left'>부동산</td>";
+    row +="<td class='col-sm-4 text-left'>Real Estate</td>";
     if(0< tengible_estate_assets.length){
         for(var i=0; i<tengible_estate_assets.length;i++){
             previous_price += tengible_estate_assets[i].previous_price;
@@ -210,7 +211,7 @@ function getAssetDataHtml(tengible_estate_assets, tengible_assets, financial_ass
     previous_price = 0;
     present_price = 0;
     row +="<tr>";
-    row +="<td class='col-sm-4 text-left'>현금성자산</td>";
+    row +="<td class='col-sm-4 text-left'>Cash</td>";
     if(0< tengible_assets.length){
         for(var i=0; i<tengible_assets.length;i++){
             previous_price += tengible_assets[i].previous_price;
@@ -227,7 +228,7 @@ function getAssetDataHtml(tengible_estate_assets, tengible_assets, financial_ass
     previous_price = 0;
     present_price = 0;
     row +="<tr>";
-    row +="<td class='col-sm-4 text-left'>금융자산</td>";
+    row +="<td class='col-sm-4 text-left'>Finances</td>";
     if(0< financial_assets.length){
         for(var i=0; i<financial_assets.length;i++){
             previous_price += financial_assets[i].previous_price;
@@ -242,7 +243,7 @@ function getAssetDataHtml(tengible_estate_assets, tengible_assets, financial_ass
     previous_price = 0;
     present_price = 0;
     row +="<tr>";
-    row +="<td class='col-sm-4 text-left'>정치자금</td>";
+    row +="<td class='col-sm-4 text-left'>Political Funds</td>";
     if(0< political_assets.length){
         for(var i=0; i<political_assets.length;i++){
             previous_price += political_assets[i].previous_price;
@@ -260,7 +261,7 @@ function getAssetDataHtml(tengible_estate_assets, tengible_assets, financial_ass
     previous_price = 0;
     present_price = 0;
     row +="<tr>";
-    row +="<td class='col-sm-4 text-left'>채무</td>";
+    row +="<td class='col-sm-4 text-left'>Debt</td>";
     if(0< liability_assets.length){
         for(var i=0; i<liability_assets.length;i++){
             previous_price += liability_assets[i].previous_price;
@@ -285,7 +286,7 @@ function getAssetDataHtmlByMobile(tengible_estate_assets, tengible_assets, finan
     var row = ""
     var nodata_row = "<td class='col-xs-5 text-right'>-</td></tr><tr style='height:1px !important;border-bottom:1px solid rgba(255,255,255,0.5);'><td></td></tr>";
     
-    row += '<tr class="title_row"><td class="col-xs-7 text-left"><div class="official_title">부동산</div></td>';
+    row += '<tr class="title_row"><td class="col-xs-7 text-left"><div class="official_title">Real Estate</div></td>';
     if(0< tengible_estate_assets.length){
         for(var i=0; i<tengible_estate_assets.length;i++){
             previous_price += tengible_estate_assets[i].previous_price;
@@ -303,7 +304,7 @@ function getAssetDataHtmlByMobile(tengible_estate_assets, tengible_assets, finan
     previous_price = 0;
     present_price = 0;
     
-    row += '<tr class="title_row"><td class="col-xs-7 text-left"><div class="official_title">현금성자산</div></td>';
+    row += '<tr class="title_row"><td class="col-xs-7 text-left"><div class="official_title">Cash</div></td>';
     if(0< tengible_assets.length){
         for(var i=0; i<tengible_assets.length;i++){
             previous_price += tengible_assets[i].previous_price;
@@ -321,7 +322,7 @@ function getAssetDataHtmlByMobile(tengible_estate_assets, tengible_assets, finan
     previous_price = 0;
     present_price = 0;
     
-    row += '<tr class="title_row"><td class="col-xs-7 text-left"><div class="official_title">금융자산</div></td>';
+    row += '<tr class="title_row"><td class="col-xs-7 text-left"><div class="official_title">Financial Assets</div></td>';
     if(0< financial_assets.length){
         for(var i=0; i<financial_assets.length;i++){
             previous_price += financial_assets[i].previous_price;
@@ -339,7 +340,7 @@ function getAssetDataHtmlByMobile(tengible_estate_assets, tengible_assets, finan
     previous_price = 0;
     present_price = 0;
     
-    row += '<tr class="title_row"><td class="col-xs-7 text-left"><div class="official_title">정치자금</div></td>';
+    row += '<tr class="title_row"><td class="col-xs-7 text-left"><div class="official_title">Political Funds</div></td>';
     if(0< political_assets.length){
         for(var i=0; i<political_assets.length;i++){
             previous_price += political_assets[i].previous_price;
@@ -357,7 +358,7 @@ function getAssetDataHtmlByMobile(tengible_estate_assets, tengible_assets, finan
     previous_price = 0;
     present_price = 0;
     
-    row += '<tr class="title_row"><td class="col-xs-7 text-left"><div class="official_title">채무</div></td>';
+    row += '<tr class="title_row"><td class="col-xs-7 text-left"><div class="official_title">Liability Assets</div></td>';
     if(0< liability_assets.length){
         for(var i=0; i<liability_assets.length;i++){
             previous_price += liability_assets[i].previous_price;
