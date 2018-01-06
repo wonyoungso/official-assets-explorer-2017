@@ -46,7 +46,9 @@ module.exports = {
     console.log('uploading... : ' + req.params.csv_year);
     const csv_year = req.params.csv_year;
     
-    if(csv_year !='' && csv_year !=2017 && csv_year !=null){
+    if(csv_year !='' && csv_year !=null){
+
+      // console.log("request", req);
         upload(req, res, function(err){
           var stream = fs.createReadStream('./datas/'+csv_year+'_assets.csv');
           // var stream = fs.createReadStream('./datas/_test.csv');
@@ -54,10 +56,10 @@ module.exports = {
           .on("data", function(data){
             // arrange asset data to each tables;
             years = csv_year;
+            // console.log(years);
             csv_datas.push(arrangeTypeDats(data));
           })
           .on("end", function(){
-            
             if(consts.START_INDEX < csv_datas.length){
               insertOfficerDatas(consts.START_INDEX);
             }
@@ -234,7 +236,8 @@ var post_options = {
 
 function insertOfficerDatas(index){
   const data = csv_datas[index];
-  
+  // console.log(data);
+
   post_options.path ='/api/officers';
   post_options.headers = {
     'Content-Type': 'application/x-www-form-urlencoded',

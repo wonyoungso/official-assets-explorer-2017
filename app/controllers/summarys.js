@@ -48,7 +48,8 @@ module.exports = {
     },
     list(req, res){
         var keyword = req.params.keyword;
-        var search_year = (new Date()).getFullYear();
+        var search_year = 2017;
+
         console.log('search_year : ' + search_year);
         if(keyword !='-' && 0 < keyword.length){
             return summary
